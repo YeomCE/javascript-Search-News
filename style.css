@@ -60,6 +60,7 @@ a {
     outline: none;
     width: 200px;
     height: 25px;
+    padding-left: 5px;
 }
 
 .search .search-input button {
@@ -78,7 +79,7 @@ a {
     justify-content: center;
 }
 
-.head-line svg {
+.head-line .title img {
     width: 430px;
     cursor: pointer;
 }
@@ -103,6 +104,11 @@ a {
     background-color: beige;
 }
 
+.menu_on{
+    color: #9e2121;
+    font-weight: 900;
+}
+
 /*------------content------------*/
 .news-img-size {
     max-width: 100%;
@@ -113,6 +119,23 @@ a {
     border-bottom: 1px solid #000;
     padding: 20px 0;
 }
+
+.link{
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+.link p {
+    display: inline-block;
+}
+.link p span {
+    display: inline-block;
+    font-weight: bold;
+}
+
+.date{
+    color: #959595;
+}
+
 
 
 
