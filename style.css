@@ -1,0 +1,255 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+ul,
+li {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    color: #000;
+    text-decoration: none;
+}
+
+.aside_menu_back,
+.aside_menu,
+.m_header {
+    display: none;
+}
+
+.menus,
+.container .search {
+    display: block;
+}
+
+/*------------검색------------*/
+.container .search, .m_header .search{
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+}
+
+.search .fa-solid {
+    margin: 10px;
+    cursor: pointer;
+}
+
+.search-input-back {
+    width: 256px;
+    overflow: hidden;
+    display: inline-block;
+}
+
+.search-input {
+    display: inline-block;
+    width: 256px;
+    transform: translateX(-150%);
+    transition: all 0.5s;
+}
+
+.search-input.click {
+    transform: translateX(0%);
+}
+
+.search .search-input input {
+    border: 1px solid #959595;
+    outline: none;
+    width: 200px;
+    height: 25px;
+}
+
+.search .search-input button {
+    box-sizing: border-box;
+    width: 50px;
+    height: 25px;
+    border: none;
+    background-color: #000;
+    color: #fff;
+}
+
+/*------------head-line------------*/
+.head-line {
+    margin-top: 15px;
+    display: flex;
+    justify-content: center;
+}
+
+.head-line svg {
+    width: 430px;
+    cursor: pointer;
+}
+
+/*------------menus------------*/
+.menus {
+    margin-top: 15px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    border-top: 1px solid #ebebeb;
+    border-bottom: 4px double #000;
+}
+
+.menus button {
+    border: none;
+    background: none;
+    padding: 5px;
+}
+
+.menus button:hover {
+    background-color: beige;
+}
+
+/*------------content------------*/
+.news-img-size {
+    max-width: 100%;
+    max-height: 250px;
+}
+
+.news {
+    border-bottom: 1px solid #000;
+    padding: 20px 0;
+}
+
+
+
+
+@media (max-width:640px) {
+
+    .aside_menu_back,
+    .aside_menu,
+    .m_header {
+        display: block;
+    }
+
+    .menus,
+    .container .search {
+        display: none;
+    }
+
+
+    .m_header {
+        display: flex;
+        align-items: center;
+    }
+
+    .news:first-child {
+        margin-top: 15px;
+        border-top: 4px double #000;
+    }
+
+    /*------------햄버거메뉴------------*/
+    .aside_menu_button {
+        width: 70px;
+        height: 60px;
+        position: relative;
+        z-index: 99;
+    }
+
+    .aside_menu_button li {
+        display: block;
+        position: absolute;
+        width: 30px;
+        height: 2px;
+        background-color: #000;
+        border-radius: 20px;
+        transition: all 0.5s;
+    }
+
+    .aside_menu_button li:nth-child(1) {
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .aside_menu_button li:nth-child(2) {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .aside_menu_button li:nth-child(3) {
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-bottom: none;
+    }
+
+
+    /*----------------header 햄버거 - 토글----------------*/
+    .aside_menu_button.toggle li:nth-child(1) {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) rotate(45deg);
+    }
+
+    .aside_menu_button.toggle li:nth-child(2) {
+        opacity: 0;
+    }
+
+    .aside_menu_button.toggle li:nth-child(3) {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) rotate(-45deg);
+    }
+
+    .aside_menu_button.toggle li {
+        background-color: #fff;
+    }
+
+    /*------------aside 메뉴------------*/
+    .aside_menu {
+        display: block;
+        position: fixed;
+        left: 0;
+        width: 100%;
+        z-index: 20;
+        transition: all 0.5s;
+        box-sizing: border-box;
+        padding-left: 10px;
+        left: -100%;
+    }
+
+    .aside_menu button {
+        padding: 15px 20px;
+        color: #fff;
+        font-size: 15px;
+        border: none;
+        background: none;
+    }
+
+    .aside_menu_back {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        left: -100%;
+        background-color: rgba(0, 0, 0, 0.8);
+        z-index: 11;
+        transition: all 0.5s;
+    }
+
+    .aside_menu.toggle,
+    .aside_menu_back.toggle {
+        left: 0;
+    }
+}
+
+@media (max-width:400px) {
+    .search .fa-solid {
+        margin-left: 0px;
+    }
+
+    .search .search-input input {
+        width: 150px;
+    }
+}
+
+@media (max-width:330px) {
+    .search .search-input input {
+        width: 120px;
+    }
+}
