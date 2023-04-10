@@ -38,7 +38,7 @@ let url;
 
 // pagination
 let page = 1;
-let totalPages = 0;
+let totalPage = 0;
 let pageNum;
 let pageStart;
 
@@ -57,16 +57,15 @@ topicSearch.addEventListener("focus", function () {
 
 // api 호출 함수
 const getNews = async () => {
-    try{
+    try {
         let header = new Headers({
             // 'Content-Type' : 'application/json',
             'X-Naver-Client-Id': 'dJY23PNqY1zpYkvDqb5m',
             'X-Naver-Client-Secret': 'abNrXzzMLL',
         });
-        
+
         pageStart = page
-        let pageStart2 = pageStart
-        url.searchParams.set('start', (pageStart2 * 10) - 9);
+        url.searchParams.set('start', (pageStart * 10) - 9);
 
         let response = await fetch(url, { headers: header });
         let data = await response.json();
@@ -74,22 +73,25 @@ const getNews = async () => {
         news = data.items;
 
 
-        if(response.status == 200 ){
-            if(news.length <= 0){
+        if (response.status == 200) {
+            if (news.length <= 0) {
                 throw new Error("검색된 결과값이 없습니다.")
             }
-            
+
             news = data.items;
+            totalPage = Math.ceil(data.total / 10);
+            dataTotal = data.total;
+            console.log(data)
             render();
             pagination();
 
         }
-        else{
+        else {
             throw new Error(data.errorMessage)
         }
     }
 
-    catch(error){
+    catch (error) {
         console.log("잡힌 에러는", error.message)
         errorRender(error.message);
     }
@@ -101,6 +103,7 @@ const getNews = async () => {
 // title 클릭 시 처음으로
 title.addEventListener("click", async () => {
     url = new URL("https://cors-anywhere.herokuapp.com/https://openapi.naver.com/v1/search/news.json?query=%EB%89%B4%EC%8A%A4&display=10&sort=sim");
+    page = 1;
     getNews();
 })
 
@@ -109,6 +112,7 @@ searchButton.addEventListener("click", () => getSearchedNews())
 
 const getLatestNews = async () => {
     url = new URL("https://cors-anywhere.herokuapp.com/https://openapi.naver.com/v1/search/news.json?query=%EB%89%B4%EC%8A%A4&display=10&sort=sim");
+    page = 1;
     getNews();
 };
 
@@ -117,6 +121,7 @@ const getNewsByTopic = async (event) => {
     let topic = encodeURI(event.target.textContent);
 
     url = new URL(`https://cors-anywhere.herokuapp.com/https://openapi.naver.com/v1/search/news.json?query=${topic}&display=10&sort=sim`);
+    page = 1;
     getNews();
 }
 
@@ -124,6 +129,7 @@ const getNewsByTopic = async (event) => {
 const getSearchedNews = async () => {
     let topic = encodeURI(topicSearch.value);
     url = new URL(`https://cors-anywhere.herokuapp.com/https://openapi.naver.com/v1/search/news.json?query=${topic}&display=10&sort=sim`);
+    page = 1;
     getNews();
 }
 
@@ -151,13 +157,12 @@ const render = () => {
     }).join("");
 
     document.getElementById("news-board").innerHTML = newsHTML
-    console.log("lastPage", page)
 
 }
 
 const errorRender = (message) => {
-    let errorHTML = 
-    `<div class="alert alert-danger text-center" role="alert">
+    let errorHTML =
+        `<div class="alert alert-danger text-center" role="alert">
         ${message}
     </div>`
     document.getElementById("news-board").innerHTML = errorHTML
@@ -168,58 +173,76 @@ const pagination = () => {
     // total-page
     // page
     // page group
-    let pageGroup = Math.ceil(page/5);
+    let pageGroup = Math.ceil(page / 5);
     // last page
-    let last = pageGroup*5
+    let last = pageGroup * 5
+    let dataLast = 100
+    if(dataTotal < 1000){
+        dataLast = totalPage;
+    }
     // first page
-    let first = last - 4
+    let first = last - 4 <= 0 ? 1 : last - 4;
     // first ~ last page print
+    if(totalPage - first < 4){
+        last = totalPage;
+    }
+    
 
-    paginationHTML = 
-    `
+    if (first >= 6) {
+        paginationHTML +=
+            `
     <li class="page-item">
-        <a class="page-link" href="#" aria-label="Previous">
-        <span aria-hidden="true">&laquo;</span>
+        <a class="page-link" href="#" aria-label="Previous" onClick="moveToPage(1)">
+        <span aria-hidden="true">&lt;&lt;</span>
         </a>
     </li>
     <li class="page-item">
-      <a class="page-link" href="#" aria-label="Previous" onClick="moveToPage(${page-1})">
-        <span aria-hidden="true">&lt</span>
+      <a class="page-link" href="#" aria-label="Previous" onClick="moveToPage(${page - 1})">
+        <span aria-hidden="true">&lt;</span>
       </a>
     </li>
     `
-    for(let i = first; i<=last; i++){
+    }
+    
+    for (let i = first; i <= last; i++) {
+
         paginationHTML +=
             `
-            <li class="page-item ${page == i? "active" :""}"><a class="page-link" href="#" onClick="moveToPage(${i})">${i}</a></li>
+            <li class="page-item ${page == i ? "active" : ""}"><a class="page-link" href="#" onClick="moveToPage(${i})">${i}</a></li>
             `
 
     }
-    paginationHTML +=
+    
+    if(last == totalPage){
+        paginationHTML +=
+            ``
+    }
+    else if (last < 100) {
+        paginationHTML +=
+            `
+            <li class="page-item">
+            <a class="page-link" href="#" aria-label="Next" onClick="moveToPage(${page + 1})">
+              <span aria-hidden="true">&gt;</span>
+            </a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="#" aria-label="Next" onClick="moveToPage(${dataLast})">
+              <span aria-hidden="true">&gt;&gt;</span>
+            </a>
+          </li>
     `
-    <li class="page-item">
-      <a class="page-link" href="#" aria-label="Next" onClick="moveToPage(${page+1})">
-        <span aria-hidden="true">&gt;</span>
-      </a>
-    </li>
-    <li class="page-item">
-      <a class="page-link" href="#" aria-label="Next">
-        <span aria-hidden="true">&raquo;</span>
-      </a>
-    </li>
-    `
+    }
     document.querySelector(".pagination").innerHTML = paginationHTML;
-
 };
 
 const moveToPage = (pageNum) => {
-    if(pageNum <= 0){
+    if (pageNum <= 0) {
         return
     }
-    else{
+    else {
         // 이동하고 싶은 페이지 확인
         page = pageNum
-        
+
         // 이동하고 싶은 페이지를 가지고 api 재호출
         getNews();
 
