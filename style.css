@@ -122,7 +122,6 @@ a {
 
 .link{
     margin-bottom: 10px;
-    cursor: pointer;
 }
 .link p {
     display: inline-block;
@@ -130,6 +129,9 @@ a {
 .link p span {
     display: inline-block;
     font-weight: bold;
+}
+.link p span a{
+    cursor: pointer;
 }
 
 .date{
