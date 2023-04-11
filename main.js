@@ -142,7 +142,7 @@ const render = () => {
                         ${item.description}
                     </p>
                     <div class="link">
-                        <p><span>바로가기</span> :  <a href="${item.link}" target="_blank">${item.link}</a></p>
+                        <p><a href="${item.link}" target="_blank">뉴스 바로가기</a></p>
                     </div>
                     <div class ="date">
                         ${item.pubDate}

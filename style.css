@@ -69,9 +69,12 @@ a {
     justify-content: center;
 }
 
-.head-line .title img {
+.head-line .title {
     width: 430px;
     cursor: pointer;
+}
+.head-line .title img{
+    width: 100%;
 }
 
 /*------------menus------------*/
@@ -115,15 +118,8 @@ a {
 }
 .link p {
     display: inline-block;
-}
-.link p span {
-    display: inline-block;
     font-weight: bold;
 }
-.link p span a{
-    cursor: pointer;
-}
-
 .date{
     color: #959595;
 }
@@ -257,6 +253,12 @@ a {
     .aside_menu_back.toggle {
         left: 0;
     }
+
+    .head-line .title {
+        width: 80%;
+        cursor: pointer;
+    }
+
 }
 
 @media (max-width:400px) {
