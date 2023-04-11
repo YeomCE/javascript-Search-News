@@ -1,3 +1,4 @@
+
 // 모바일 aside menu
 let asideMenuButton = document.querySelector(".aside_menu_button");
 let asideMenuBack = document.querySelector(".aside_menu_back");
@@ -52,6 +53,7 @@ const getNews = async () => {
     try {
         let header = new Headers({
             // 'Content-Type' : 'application/json',
+            // 'x-cors-api-key' : 'temp_9a793e20d7852cedf784de8eaca596b2',
             'X-Naver-Client-Id': 'dJY23PNqY1zpYkvDqb5m',
             'X-Naver-Client-Secret': 'abNrXzzMLL',
         });
@@ -59,7 +61,10 @@ const getNews = async () => {
         pageStart = page
         url.searchParams.set('start', (pageStart * 10) - 9);
 
-        let response = await fetch(url, { headers: header });
+        console.log("url", url);
+        console.log("header", header);
+
+        let response = await fetch(url, { headers : header });
         let data = await response.json();
 
         news = data.items;
@@ -103,7 +108,7 @@ mobileMenus.forEach((menu) => menu.addEventListener("click", (event) => getNewsB
 searchButton.addEventListener("click", () => getSearchedNews())
 
 const getLatestNews = async () => {
-    url = new URL("https://cors-anywhere.herokuapp.com/https://openapi.naver.com/v1/search/news.json?query=%EB%89%B4%EC%8A%A4&display=10&sort=sim");
+    url = new URL(`https://cors-anywhere.herokuapp.com/https://openapi.naver.com/v1/search/news.json?query=%EB%89%B4%EC%8A%A4&display=10&sort=sim`);
     page = 1;
     getNews();
 };
@@ -217,15 +222,15 @@ const pagination = () => {
         paginationHTML +=
             `
             <li class="page-item">
-            <a class="page-link" href="#" aria-label="Next" onClick="moveToPage(${page + 1})">
-              <span aria-hidden="true">&gt;</span>
-            </a>
-          </li>
-          <li class="page-item">
-            <a class="page-link" href="#" aria-label="Next" onClick="moveToPage(${dataLast})">
-              <span aria-hidden="true">&gt;&gt;</span>
-            </a>
-          </li>
+                <a class="page-link" href="#" aria-label="Next" onClick="moveToPage(${page + 1})">
+                    <span aria-hidden="true">&gt;</span>
+                </a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="#" aria-label="Next" onClick="moveToPage(${dataLast})">
+                    <span aria-hidden="true">&gt;&gt;</span>
+                </a>
+            </li>
     `
     }
     document.querySelector(".pagination").innerHTML = paginationHTML;
