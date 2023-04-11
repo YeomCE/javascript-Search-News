@@ -10,8 +10,6 @@ let MobileSearchInput = document.querySelector(".m_header .search-input")
 let PcSearchInput = document.querySelector(".container .search-input")
 
 asideMenuButton.addEventListener("click", aside);
-MobileSearchIcon.addEventListener("click", MobileSearchOn);
-PcSearchIcon.addEventListener("click", PcSearchOn);
 
 
 function aside() {
@@ -19,18 +17,12 @@ function aside() {
     asideMenuBack.classList.toggle("toggle");
     asideMenu.classList.toggle("toggle");
 }
-function MobileSearchOn() {
-    MobileSearchInput.classList.toggle("click");
-}
-function PcSearchOn() {
-    PcSearchInput.classList.toggle("click");
-}
-
 
 // API
 let news = [];
 let title = document.querySelector(".title");
-let menus = document.querySelectorAll(".menus button");
+let menus = document.querySelectorAll(".aside_menu button");
+let mobileMenus = document.querySelectorAll(".menus button");
 let searchButton = document.querySelector(".search-button");
 let topicSearch = document.querySelector(".topic-search");
 
@@ -81,7 +73,6 @@ const getNews = async () => {
             news = data.items;
             totalPage = Math.ceil(data.total / 10);
             dataTotal = data.total;
-            console.log(data)
             render();
             pagination();
 
@@ -108,6 +99,7 @@ title.addEventListener("click", async () => {
 })
 
 menus.forEach((menu) => menu.addEventListener("click", (event) => getNewsByTopic(event)));
+mobileMenus.forEach((menu) => menu.addEventListener("click", (event) => getNewsByTopic(event)));
 searchButton.addEventListener("click", () => getSearchedNews())
 
 const getLatestNews = async () => {
@@ -123,6 +115,9 @@ const getNewsByTopic = async (event) => {
     url = new URL(`https://cors-anywhere.herokuapp.com/https://openapi.naver.com/v1/search/news.json?query=${topic}&display=10&sort=sim`);
     page = 1;
     getNews();
+    asideMenuButton.classList.remove("toggle");
+    asideMenuBack.classList.remove("toggle");
+    asideMenu.classList.remove("toggle");
 }
 
 // 검색
@@ -160,11 +155,12 @@ const render = () => {
 
 }
 
+// 에러메세지
 const errorRender = (message) => {
     let errorHTML =
         `<div class="alert alert-danger text-center" role="alert">
-        ${message}
-    </div>`
+            ${message}
+        </div>`
     document.getElementById("news-board").innerHTML = errorHTML
 }
 
