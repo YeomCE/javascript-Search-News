@@ -27,9 +27,6 @@ let topicSearch = document.querySelector(".topic-search");
 
 let url;
 
-const APIKEYID  = CONFIG.Id;
-const APIKEYSECRET  = CONFIG.Secret;
-
 const BASE_URL = "https://cors-anywhere.herokuapp.com/https://openapi.naver.com/"
 
 // pagination
@@ -55,8 +52,8 @@ topicSearch.addEventListener("focus", function () {
 const getNews = async () => {
     try {
         let header = new Headers({
-            'X-Naver-Client-Id': APIKEYID,
-            'X-Naver-Client-Secret': APIKEYSECRET,
+            'X-Naver-Client-Id': 'dJY23PNqY1zpYkvDqb5m',
+            'X-Naver-Client-Secret': 'abNrXzzMLL',
         });
 
         pageStart = page
