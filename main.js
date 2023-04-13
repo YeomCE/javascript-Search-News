@@ -5,10 +5,8 @@ let asideMenuBack = document.querySelector(".aside_menu_back");
 let asideMenu = document.querySelector(".aside_menu");
 
 // 검색 관련
-let MobileSearchIcon = document.querySelector(".m_search_icon")
-let PcSearchIcon = document.querySelector(".pc_search_icon")
-let MobileSearchInput = document.querySelector(".m_header .search-input")
-let PcSearchInput = document.querySelector(".container .search-input")
+let searchInput = document.querySelector(".container .search-input")
+let searchButton = document.querySelector(".search-button");
 
 asideMenuButton.addEventListener("click", aside);
 
@@ -24,10 +22,15 @@ let news = [];
 let title = document.querySelector(".title");
 let menus = document.querySelectorAll(".aside_menu button");
 let mobileMenus = document.querySelectorAll(".menus button");
-let searchButton = document.querySelector(".search-button");
 let topicSearch = document.querySelector(".topic-search");
 
+
 let url;
+
+const APIKEYID  = CONFIG.Id;
+const APIKEYSECRET  = CONFIG.Secret;
+
+const BASE_URL = "https://cors-anywhere.herokuapp.com/https://openapi.naver.com/"
 
 // pagination
 let page = 1;
@@ -52,22 +55,19 @@ topicSearch.addEventListener("focus", function () {
 const getNews = async () => {
     try {
         let header = new Headers({
-            // 'Content-Type' : 'application/json',
-            // 'x-cors-api-key' : 'temp_9a793e20d7852cedf784de8eaca596b2',
-            'X-Naver-Client-Id': 'dJY23PNqY1zpYkvDqb5m',
-            'X-Naver-Client-Secret': 'abNrXzzMLL',
+            'X-Naver-Client-Id': APIKEYID,
+            'X-Naver-Client-Secret': APIKEYSECRET,
         });
 
         pageStart = page
         url.searchParams.set('start', (pageStart * 10) - 9);
 
-        console.log("url", url);
-        console.log("header", header);
-
         let response = await fetch(url, { headers : header });
         let data = await response.json();
 
         news = data.items;
+
+        console.log(url)
 
 
         if (response.status == 200) {
@@ -95,21 +95,18 @@ const getNews = async () => {
 }
 
 
-
 // title 클릭 시 처음으로
 title.addEventListener("click", async () => {
-    url = new URL("https://cors-anywhere.herokuapp.com/https://openapi.naver.com/v1/search/news.json?query=%EB%89%B4%EC%8A%A4&display=10&sort=sim");
-    page = 1;
+    url = new URL(`${BASE_URL}v1/search/news.json?query=%EB%89%B4%EC%8A%A4&display=10&sort=sim`);
     getNews();
 })
 
 menus.forEach((menu) => menu.addEventListener("click", (event) => getNewsByTopic(event)));
 mobileMenus.forEach((menu) => menu.addEventListener("click", (event) => getNewsByTopic(event)));
-searchButton.addEventListener("click", () => getSearchedNews())
+searchButton.addEventListener("click", () => getSearchedNews());
 
 const getLatestNews = async () => {
-    url = new URL(`https://cors-anywhere.herokuapp.com/https://openapi.naver.com/v1/search/news.json?query=%EB%89%B4%EC%8A%A4&display=10&sort=sim`);
-    page = 1;
+    url = new URL(`${BASE_URL}v1/search/news.json?query=%EB%89%B4%EC%8A%A4&display=10&sort=sim`);
     getNews();
 };
 
@@ -117,8 +114,7 @@ const getLatestNews = async () => {
 const getNewsByTopic = async (event) => {
     let topic = encodeURI(event.target.textContent);
 
-    url = new URL(`https://cors-anywhere.herokuapp.com/https://openapi.naver.com/v1/search/news.json?query=${topic}&display=10&sort=sim`);
-    page = 1;
+    url = new URL(`${BASE_URL}v1/search/news.json?query=${topic}&display=10&sort=sim`);
     getNews();
     asideMenuButton.classList.remove("toggle");
     asideMenuBack.classList.remove("toggle");
@@ -128,8 +124,7 @@ const getNewsByTopic = async (event) => {
 // 검색
 const getSearchedNews = async () => {
     let topic = encodeURI(topicSearch.value);
-    url = new URL(`https://cors-anywhere.herokuapp.com/https://openapi.naver.com/v1/search/news.json?query=${topic}&display=10&sort=sim`);
-    page = 1;
+    url = new URL(`${BASE_URL}v1/search/news.json?query=${topic}&display=10&sort=sim`);
     getNews();
 }
 
@@ -171,19 +166,14 @@ const errorRender = (message) => {
 
 const pagination = () => {
     let paginationHTML = ``;
-    // total-page
-    // page
-    // page group
     let pageGroup = Math.ceil(page / 5);
-    // last page
     let last = pageGroup * 5
     let dataLast = 100
     if(dataTotal < 1000){
         dataLast = totalPage;
     }
-    // first page
     let first = last - 4 <= 0 ? 1 : last - 4;
-    // first ~ last page print
+
     if(totalPage - first < 4){
         last = totalPage;
     }
@@ -241,10 +231,8 @@ const moveToPage = (pageNum) => {
         return
     }
     else {
-        // 이동하고 싶은 페이지 확인
         page = pageNum
 
-        // 이동하고 싶은 페이지를 가지고 api 재호출
         getNews();
 
     }

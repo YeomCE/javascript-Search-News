@@ -22,7 +22,7 @@ a {
 }
 
 .menus,
-.container .search {
+.container {
     display: block;
 }
 
@@ -30,7 +30,6 @@ a {
 .container .search, .m_header .search{
     display: flex;
     align-items: center;
-    overflow: hidden;
 }
 
 
@@ -41,7 +40,6 @@ a {
 
 .search-input {
     display: inline-block;
-    width: 256px;
     transition: all 0.5s;
 }
 
@@ -130,6 +128,17 @@ a {
     margin-top: 20px;
 }
 
+.page-link{
+    color: #000;
+}
+.page-link:hover{
+    color: #000;
+}
+.page-item.active .page-link{
+    background-color: #000;
+    border-color: #000;
+}
+
 
 
 
@@ -142,11 +151,9 @@ a {
         display: block;
     }
 
-    .menus,
-    .container .search {
+    .menus {
         display: none;
     }
-
 
     .m_header {
         display: flex;
@@ -254,6 +261,14 @@ a {
         left: 0;
     }
 
+    /*-----------모바일 search 위치 조정-----------*/
+    .container .search {
+        position: absolute;
+        display: inline-block;
+        top: 13px;
+        left: 57px;
+    }
+
     .head-line .title {
         width: 80%;
         cursor: pointer;
@@ -263,16 +278,41 @@ a {
 
 @media (max-width:400px) {
     .search .fa-solid {
-        margin-left: 0px;
+        margin-left: 12px;
     }
 
+    .search .search-input input {
+        width: 190px;
+    }
+}
+
+@media (max-width:375px) {
+    .container .search {
+        margin-left: 12px;
+        top: 18px;
+    }
+    .search .fa-solid {
+        display: none;
+    }
+}
+
+@media (max-width:350px) {
+    .search .search-input input {
+        width: 180px;
+    }
+}
+@media (max-width:350px) {
     .search .search-input input {
         width: 150px;
     }
 }
-
-@media (max-width:330px) {
+@media (max-width:305px) {
     .search .search-input input {
-        width: 120px;
+        width: 125px;
+    }
+}
+@media (max-width:278px) {
+    .search .search-input input {
+        width: 100px;
     }
 }
