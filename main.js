@@ -51,6 +51,12 @@ topicSearch.addEventListener("focus", function () {
 // api 호출 함수
 const getNews = async () => {
     try {
+        document.getElementById("news-board").innerHTML =
+            `
+        <div class="alert alert-info text-center" role="alert">
+            로딩 중입니다.
+        </div>
+        `
         let header = new Headers({
             'X-Naver-Client-Id': 'dJY23PNqY1zpYkvDqb5m',
             'X-Naver-Client-Secret': 'abNrXzzMLL',
@@ -59,12 +65,10 @@ const getNews = async () => {
         pageStart = page
         url.searchParams.set('start', (pageStart * 10) - 9);
 
-        let response = await fetch(url, { headers : header });
+        let response = await fetch(url, { headers: header });
         let data = await response.json();
 
         news = data.items;
-
-        console.log(url)
 
 
         if (response.status == 200) {
@@ -166,15 +170,15 @@ const pagination = () => {
     let pageGroup = Math.ceil(page / 5);
     let last = pageGroup * 5
     let dataLast = 100
-    if(dataTotal < 1000){
+    if (dataTotal < 1000) {
         dataLast = totalPage;
     }
     let first = last - 4 <= 0 ? 1 : last - 4;
 
-    if(totalPage - first < 4){
+    if (totalPage - first < 4) {
         last = totalPage;
     }
-    
+
 
     if (first >= 6) {
         paginationHTML +=
@@ -191,7 +195,7 @@ const pagination = () => {
     </li>
     `
     }
-    
+
     for (let i = first; i <= last; i++) {
 
         paginationHTML +=
@@ -200,8 +204,8 @@ const pagination = () => {
             `
 
     }
-    
-    if(last == totalPage){
+
+    if (last == totalPage) {
         paginationHTML +=
             ``
     }
@@ -229,7 +233,6 @@ const moveToPage = (pageNum) => {
     }
     else {
         page = pageNum
-
         getNews();
 
     }
