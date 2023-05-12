@@ -79,6 +79,7 @@ const getNews = async () => {
             news = data.items;
             totalPage = Math.ceil(data.total / 10);
             dataTotal = data.total;
+            page = 1
             render();
             pagination();
 
@@ -91,6 +92,8 @@ const getNews = async () => {
     catch (error) {
         console.log("잡힌 에러는", error.message)
         errorRender(error.message);
+
+        
     }
 
 }
@@ -116,6 +119,7 @@ const getNewsByTopic = async (event) => {
     let topic = encodeURI(event.target.textContent);
 
     url = new URL(`${BASE_URL}v1/search/news.json?query=${topic}&display=10&sort=sim`);
+    page = 1;
     getNews();
     asideMenuButton.classList.remove("toggle");
     asideMenuBack.classList.remove("toggle");
@@ -126,6 +130,7 @@ const getNewsByTopic = async (event) => {
 const getSearchedNews = async () => {
     let topic = encodeURI(topicSearch.value);
     url = new URL(`${BASE_URL}v1/search/news.json?query=${topic}&display=10&sort=sim`);
+    page = 1;
     getNews();
 }
 
@@ -158,6 +163,12 @@ const render = () => {
 
 // 에러메세지
 const errorRender = (message) => {
+    console.log('message',message)
+    // let errorHTML =
+    //     `<div class="alert alert-danger text-center" role="alert">
+    //         cors-anywhere.herokuapp.com에 접속하여 버튼을 클릭해 주십시오.
+    //     </div>`
+    // document.getElementById("news-board").innerHTML = errorHTML
     let errorHTML =
         `<div class="alert alert-danger text-center" role="alert">
             ${message}
