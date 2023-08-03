@@ -25,4 +25,4 @@
 <br/>
 
 
-<a href='https://yce-movie-search.netlify.app'>페이지 바로가기</a>
+<a href='https://yce-search-news.netlify.app'>페이지 바로가기</a>
